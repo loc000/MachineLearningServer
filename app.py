@@ -36,27 +36,49 @@ def predict():
     request_json = request.json
     img = cv2.imdecode(np.frombuffer(request.data, np.uint8), cv2.IMREAD_UNCHANGED)
     height, width, _ = img.shape
+    rows = img.shape[0]
+    cols = img.shape[1]
     cvNet.setInput(cv2.dnn.blobFromImage(img, size=(300, 300), swapRB=True, crop=False))
     cvOut = cvNet.forward()
     output_result_list = []
     for detection in cvOut[0, 0, :, :]:
         score = float(detection[2])
         if score > 0.3:
-            left = detection[3] * height
-            top = detection[4] * width
-            right = detection[5] * height
-            bottom = detection[6] * width
-            cv2.rectangle(img, (int(left), int(top)), (int(right), int(bottom)), (23, 230, 210), thickness=2)
-            print(classList[int(detection[1]) - 1])
-            cv2.putText(img, classList[int(detection[1]) - 1], (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
-                        (0, 255, 255), 1, cv2.LINE_AA)
+            left = max(detection[3] * cols, 0)
+            top = max(detection[4] * rows, 0)
+            right = detection[5] * cols
+            bottom = detection[6] * rows
+            # cv2.rectangle(img, (int(left), int(top)), (int(right), int(bottom)), (23, 230, 210), thickness=2)
+            # print(classList[int(detection[1]) - 1])
+            # cv2.putText(img, classList[int(detection[1]) - 1], (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
+            #             (0, 255, 255), 1, cv2.LINE_AA)
+
+            mid_x, mid_y = left + (right - left) / 2, top + (bottom - top) / 2
+            loc = ""
+            if mid_y < height / 3:
+                loc += "Top "
+            elif mid_y > height / 3 * 2:
+                loc += "Bottom "
+            if mid_x < width / 3:
+                loc += "left"
+            elif mid_x > width / 3 * 2:
+                loc += "right"
+            if loc == "":
+                loc = "Center"
+            print((int(left), int(top)), (int(right), int(bottom)))
+            # cv2.putText(img, loc, (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
+            #             (0, 255, 255), 1, cv2.LINE_AA)
+
             output_result_list.append({"className": classList[int(detection[1]) - 1],
                                        "left": (int(left)),
                                        "top": (int(top)),
                                        "right": int(right),
-                                       "bottom": int(bottom)
+                                       "bottom": int(bottom),
+                                       "location_description": loc
                                        })
     # data["result"] = output_result_list
+    # cv2.imshow("loc",img)
+    # cv2.waitKey(1)
     return jsonify(output_result_list)
 
 
