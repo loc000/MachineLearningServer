@@ -65,7 +65,6 @@ def predict():
                 loc += "right"
             if loc == "":
                 loc = "Center"
-            print((int(left), int(top)), (int(right), int(bottom)))
             # cv2.putText(img, loc, (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
             #             (0, 255, 255), 1, cv2.LINE_AA)
 
