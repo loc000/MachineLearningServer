@@ -2,4 +2,4 @@ gunicorn
 opencv-contrib-python-headless
 flask
 numpy
-
+wget

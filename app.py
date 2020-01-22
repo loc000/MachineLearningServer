@@ -6,12 +6,15 @@ import numpy as np
 # from PIL import Image
 from flask import jsonify
 from flask import request
+import wget
+
 
 cwd = os.getcwd()
 print(cwd)
 print(os.listdir("ssd_mobilenet_v2_oid_v4_2018_12_12"))
 
 # os.chdir("./ssd_mobilenet_v2_oid_v4_2018_12_12/")
+wget.download("https://github.com/loc000/MachineLearningServer/releases/download/ssd_mobilenet_v2_oid_v4_2018_12_12/frozen_inference_graph.pb",'ssd_mobilenet_v2_oid_v4_2018_12_12/frozen_inference_graph.pb')
 cvNet = cv2.dnn.readNetFromTensorflow('ssd_mobilenet_v2_oid_v4_2018_12_12/frozen_inference_graph.pb', 'ssd_mobilenet_v2_oid_v4_2018_12_12/graph.pbtxt')
 classList = [line.rstrip('\n') for line in open("ssd_mobilenet_v2_oid_v4_2018_12_12/oid_v4_label_map.txt")]
 # os.chdir(cwd)
