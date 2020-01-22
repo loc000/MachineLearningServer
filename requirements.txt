@@ -1,0 +1,5 @@
+gunicorn
+opecv-contrib-python
+flask
+numpy
+
