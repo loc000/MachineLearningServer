@@ -1,4 +1,5 @@
 import os
+import socket
 
 import cv2
 import flask
@@ -7,6 +8,7 @@ import tensorflow as tf
 from PIL import Image
 from flask import jsonify
 from flask import request
+from zeroconf import ServiceInfo, Zeroconf
 
 cwd = os.getcwd()
 
@@ -24,6 +26,15 @@ os.chdir(cwd)
 app = flask.Flask(__name__)
 app.config["DEBUG"] = False
 video_capture_dict = {}
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+try:
+    s.connect(("192.168.43.1", 80))
+except:
+    print("Fuck")
+    s.connect(("192.168.0.1", 80))
+my_ip = s.getsockname()[0]
+print(my_ip)
 
 
 @app.route('/objectdetection', methods=['GET'])
@@ -108,4 +119,19 @@ def imagecaption():
 if __name__ == "__main__":
     sess = tf.Session()
     cap_infer = CaptionInference(sess, "ShowAttendAndTellModel/model_best/model-best", use_inception=True)
+    object_detection_info = ServiceInfo("_oml._tcp.local.",
+                                        "_oml._tcp.local.",
+                                        socket.inet_aton(my_ip), 5000, 0, 0,
+                                        {'type': 'objectdetection'},
+                                        "object_detection_machine_learning_server.tcp.local.")
+
+    image_caption_info = ServiceInfo("_icml._tcp.local.",
+                                     "_icml._tcp.local.",
+                                     socket.inet_aton(my_ip), 5000, 0, 0,
+                                     {'type': 'imagecaption'},
+                                     "image_caption_machine_learning_server.tcp.local.")
+
+    zeroconf = Zeroconf()
+    zeroconf.register_service(object_detection_info)
+    zeroconf.register_service(image_caption_info)
     app.run(host='0.0.0.0')
