@@ -9,10 +9,10 @@ from flask import request
 
 cwd = os.getcwd()
 
-os.chdir("./ssd_mobilenet_v2_oid_v4_2018_12_12/")
-cvNet = cv2.dnn.readNetFromTensorflow('frozen_inference_graph.pb', 'graph.pbtxt')
-classList = [line.rstrip('\n') for line in open("oid_v4_label_map.txt")]
-os.chdir(cwd)
+# os.chdir("./ssd_mobilenet_v2_oid_v4_2018_12_12/")
+cvNet = cv2.dnn.readNetFromTensorflow('ssd_mobilenet_v2_oid_v4_2018_12_12/frozen_inference_graph.pb', 'ssd_mobilenet_v2_oid_v4_2018_12_12/graph.pbtxt')
+classList = [line.rstrip('\n') for line in open("ssd_mobilenet_v2_oid_v4_2018_12_12/oid_v4_label_map.txt")]
+# os.chdir(cwd)
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = False
