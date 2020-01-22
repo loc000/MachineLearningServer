@@ -8,6 +8,8 @@ from flask import jsonify
 from flask import request
 
 cwd = os.getcwd()
+print(cwd)
+print(os.listdir("ssd_mobilenet_v2_oid_v4_2018_12_12"))
 
 # os.chdir("./ssd_mobilenet_v2_oid_v4_2018_12_12/")
 cvNet = cv2.dnn.readNetFromTensorflow('ssd_mobilenet_v2_oid_v4_2018_12_12/frozen_inference_graph.pb', 'ssd_mobilenet_v2_oid_v4_2018_12_12/graph.pbtxt')
