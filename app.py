@@ -5,7 +5,8 @@ import socket
 import cv2
 import flask
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 from PIL import Image
 from flask import jsonify
 from flask import request
@@ -21,7 +22,14 @@ from ShowAttendAndTellModel.run_inference import CaptionInference
 os.chdir(cwd)
 
 os.chdir("./ssd_mobilenet_v2_oid_v4_2018_12_12/")
-cvNet = cv2.dnn.readNetFromTensorflow('frozen_inference_graph.pb', 'graph.pbtxt')
+model_weight_file = 'frozen_inference_graph.pb'
+model_graph_file = 'graph.pbtxt'
+if not os.path.isfile(model_weight_file):
+    import wget
+    wget.download("https://github.com/loc000/MachineLearningServer/releases/download/ssd_mobilenet_v2_oid_v4_2018_12_12/frozen_inference_graph.pb",out=model_weight_file)
+    # wget.download("https://github.com/loc000/MachineLearningServer/releases/download/ssd_mobilenet_v2_oid_v4_2018_12_12/graph.pbtxt",out=model_graph_file)
+cvNet = cv2.dnn.readNetFromTensorflow(model_weight_file, model_graph_file)
+# cvNet.setPreferableBackend(cv2.dnn.DNN_BACKEND_INFERENCE_ENGINE)
 classList = [line.rstrip('\n') for line in open("oid_v4_label_map.txt")]
 os.chdir(cwd)
 
@@ -52,9 +60,15 @@ def predict():
     cols = img.shape[1]
     cvNet.setInput(cv2.dnn.blobFromImage(img, size=(300, 300), swapRB=True, crop=False))
     cvOut = cvNet.forward()
+    # Put efficiency information.
+    t, _ = cvNet.getPerfProfile()
+    label = 'Inference time: %.2f ms' % (t * 1000.0 / cv2.getTickFrequency())
+    print(label)
     output_result_list = []
     for detection in cvOut[0, 0, :, :]:
         score = float(detection[2])
+        className = classList[int(detection[1]) - 1]
+
         if score > 0.3:
             left = max(detection[3] * cols, 0)
             top = max(detection[4] * rows, 0)
@@ -80,7 +94,7 @@ def predict():
             # cv2.putText(img, loc, (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
             #             (0, 255, 255), 1, cv2.LINE_AA)
 
-            output_result_list.append({"className": classList[int(detection[1]) - 1],
+            output_result_list.append({"className":className ,
                                        "left": (int(left)),
                                        "top": (int(top)),
                                        "right": int(right),
@@ -90,6 +104,7 @@ def predict():
     # data["result"] = output_result_list
     # cv2.imshow("loc",img)
     # cv2.waitKey(1)
+    # print(output_result_list)
     return jsonify(output_result_list)
 
 
@@ -114,6 +129,7 @@ def imagecaption():
         #     visualize(alpha, beta, caption, fname, args.use_inception)
         output_result_list.append({"caption": caption})
     # data["result"] = output_result_list
+    # print(output_result_list)
     return jsonify(output_result_list)
 
 
