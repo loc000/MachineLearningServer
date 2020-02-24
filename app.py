@@ -1,3 +1,4 @@
+port = 5000
 import os
 import socket
 
@@ -9,6 +10,7 @@ from PIL import Image
 from flask import jsonify
 from flask import request
 from zeroconf import ServiceInfo, Zeroconf
+from waitress import serve
 
 cwd = os.getcwd()
 
@@ -121,17 +123,18 @@ if __name__ == "__main__":
     cap_infer = CaptionInference(sess, "ShowAttendAndTellModel/model_best/model-best", use_inception=True)
     object_detection_info = ServiceInfo("_oml._tcp.local.",
                                         "_oml._tcp.local.",
-                                        socket.inet_aton(my_ip), 5000, 0, 0,
+                                        socket.inet_aton(my_ip), port, 0, 0,
                                         {'type': 'objectdetection'},
                                         "object_detection_machine_learning_server.tcp.local.")
 
     image_caption_info = ServiceInfo("_icml._tcp.local.",
                                      "_icml._tcp.local.",
-                                     socket.inet_aton(my_ip), 5000, 0, 0,
+                                     socket.inet_aton(my_ip), port, 0, 0,
                                      {'type': 'imagecaption'},
                                      "image_caption_machine_learning_server.tcp.local.")
 
     zeroconf = Zeroconf()
     zeroconf.register_service(object_detection_info)
     zeroconf.register_service(image_caption_info)
-    app.run(host='0.0.0.0')
+    # app.run(host='0.0.0.0')
+    serve(app, host='0.0.0.0',port=port)

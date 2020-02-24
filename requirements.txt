@@ -1,0 +1,15 @@
+zeroconf>=0.23.0
+numpy>=1.17.4
+tensorflow_gpu>=1.14.0
+waitress>=1.4.3
+opencv_contrib_python>=4.1.1.26
+Flask>=1.1.1
+Pillow>=7.0.0
+tensorflow==2.1.0
+matplotlib
+scipy
+scikit-image
+hickle
+six
+
+
