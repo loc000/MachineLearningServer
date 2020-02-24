@@ -556,3 +556,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+!/Image-Caption/
