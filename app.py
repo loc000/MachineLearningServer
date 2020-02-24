@@ -36,7 +36,6 @@ except:
     print("Fuck")
     s.connect(("192.168.0.1", 80))
 my_ip = s.getsockname()[0]
-print(my_ip)
 
 
 @app.route('/objectdetection', methods=['GET'])
@@ -137,4 +136,5 @@ if __name__ == "__main__":
     zeroconf.register_service(object_detection_info)
     zeroconf.register_service(image_caption_info)
     # app.run(host='0.0.0.0')
+    print("Broadcasting mdns on {}".format(my_ip))
     serve(app, host='0.0.0.0',port=port)
