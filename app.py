@@ -122,15 +122,17 @@ def imagecaption():
     if img_np.ndim == 2:
         img_np = np.stack((img_np,) * 3, axis=-1)
     alphas, betas, captions = cap_infer.inference_np(np.array([img_np]))
-    output_result_list = []
+    #output_result_list = []
+    out_caption = None
     for alpha, beta, caption in zip(alphas, betas, captions):
+        out_caption = caption
         # out_file.write("{}\t{}\n".format(fname, caption))
         # if args.visualize:
         #     visualize(alpha, beta, caption, fname, args.use_inception)
-        output_result_list.append({"caption": caption})
+        #output_result_list.append({"caption": caption})
     # data["result"] = output_result_list
     # print(output_result_list)
-    return jsonify(output_result_list)
+    return jsonify({"caption": out_caption})
 
 
 if __name__ == "__main__":
