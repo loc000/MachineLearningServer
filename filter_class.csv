@@ -1,0 +1,602 @@
+name,中文,improtant
+Tortoise,乌龟,0
+Container,容器,0
+Magpie,鹊,0
+Sea turtle,海龟,0
+Football,足球,1
+Ambulance,救护车,1
+Ladder,阶梯,2
+Toothbrush,牙刷,0
+Syringe,注射器,0
+Sink,水池,1
+Toy,玩具,0
+Organ,器官,0
+Cassette deck,盒式录音机,0
+Apple,苹果,0
+Human eye,人类的眼睛,1
+Cosmetics,化妆品,0
+Paddle,桨,0
+Snowman,雪人,1
+Beer,啤酒,0
+Chopsticks,筷子,0
+Human beard,人胡须,0
+Bird,鸟,0
+Parking meter,停车收费表,1
+Traffic light,红绿灯,2
+Croissant,牛角包,0
+Cucumber,黄瓜,0
+Radish,萝卜,0
+Towel,毛巾,0
+Doll,娃娃,0
+Skull,头骨,0
+Washing machine,洗衣机,0
+Glove,手套,0
+Tick,蜱,1
+Belt,腰带,0
+Sunglasses,墨镜,0
+Banjo,班卓,0
+Cart,大车,1
+Ball,球,0
+Backpack,背包,0
+Bicycle,自行车,1
+Home appliance,家电类,0
+Centipede,蜈蚣,1
+Boat,船,0
+Surfboard,冲浪板,0
+Boot,靴子,0
+Headphones,头戴式耳机,0
+Hot dog,热狗,0
+Shorts,短裤,0
+Fast food,快餐,0
+Bus,总线,0
+Boy,男孩,1
+Screwdriver,螺丝刀,0
+Bicycle wheel,自行车轮,1
+Barge,驳船,0
+Laptop,笔记本电脑,0
+Miniskirt,迷你裙,0
+Drill,钻头,0
+Dress,连衣裙,0
+Bear,熊,0
+Waffle,华夫饼,0
+Pancake,薄煎饼,0
+Brown bear,棕熊,0
+Woodpecker,啄木鸟,0
+Blue jay,蓝松鸦,0
+Pretzel,椒盐脆饼,0
+Bagel,百吉饼,0
+Tower,塔,0
+Teapot,茶壶,0
+Person,人,1
+Bow and arrow,弓箭,0
+Swimwear,游泳衣,0
+Beehive,蜂窝,0
+Brassiere,胸罩,0
+Bee,蜜蜂,0
+Bat,蝙蝠,0
+Starfish,海星,0
+Popcorn,爆米花,0
+Burrito,墨西哥卷饼,0
+Chainsaw,电锯,0
+Balloon,气球,0
+Wrench,扳手,0
+Tent,帐篷,0
+Vehicle registration plate,车辆牌照,1
+Lantern,灯笼,0
+Toaster,烤面包机,0
+Flashlight,手电筒,0
+Billboard,广告牌,1
+Tiara,头饰,0
+Limousine,豪华轿车,1
+Necklace,项链,0
+Carnivore,食肉动物,0
+Scissors,剪刀,0
+Stairs,楼梯,2
+Computer keyboard,计算机键盘,0
+Printer,打印机,0
+Traffic sign,交通标志,1
+Chair,椅子,0
+Shirt,衬衫,0
+Poster,海报,0
+Cheese,起司,0
+Sock,袜子,0
+Fire hydrant,消防栓,1
+Land vehicle,陆地车辆,1
+Earrings,耳环,0
+Tie,领带,0
+Watercraft,船只,0
+Cabinetry,橱柜,0
+Suitcase,手提箱,1
+Muffin,松饼,0
+Bidet,坐式浴盆,0
+Snack,小吃,0
+Snowmobile,雪地车,0
+Clock,时钟,0
+Medical equipment,医疗器材,0
+Cattle,牛,0
+Cello,大提琴,0
+Jet ski,摩托艇,0
+Camel,骆驼,0
+Coat,涂层,0
+Suit,适合,0
+Desk,台子,0
+Cat,猫,1
+Bronze sculpture,青铜雕塑,1
+Juice,果汁,0
+Gondola,缆车车厢,0
+Beetle,甲虫,0
+Cannon,大炮,0
+Computer mouse,电脑鼠标,0
+Cookie,曲奇饼,0
+Office building,办公楼,1
+Fountain,喷泉,2
+Coin,硬币,0
+Calculator,计算器,0
+Cocktail,鸡尾酒,0
+Computer monitor,电脑显示器,0
+Box,盒子,1
+Stapler,订书机,0
+Christmas tree,圣诞树,1
+Cowboy hat,牛仔帽,0
+Hiking equipment,远足装备,0
+Studio couch,单人沙发,0
+Drum,鼓,0
+Dessert,甜点,0
+Wine rack,酒架,0
+Drink,饮料,0
+Zucchini,密生西葫芦,0
+Ladle,汤勺,0
+Human mouth,人嘴,0
+Dairy,小商店,1
+Dice,骰子,0
+Oven,烤箱,0
+Dinosaur,恐龙,0
+Ratchet,棘轮,0
+Couch,长椅,1
+Cricket ball,板球,0
+Winter melon,冬瓜,0
+Spatula,抹刀,0
+Whiteboard,白板,0
+Pencil sharpener,卷笔刀,0
+Door,门,1
+Hat,帽子,0
+Shower,淋浴,0
+Eraser,橡皮,0
+Fedora,软呢帽,0
+Guacamole,鳄梨,0
+Dagger,匕首,0
+Scarf,围巾,0
+Dolphin,海豚,0
+Sombrero,宽边帽,0
+Tin can,锡罐,0
+Mug,杯,0
+Tap,水龙头,1
+Harbor seal,斑海豹,0
+Stretcher,担架,0
+Can opener,开罐器,0
+Goggles,风镜,0
+Human body,人体,0
+Roller skates,溜冰鞋,0
+Coffee cup,咖啡杯,0
+Cutting board,切菜板,0
+Blender,搅拌机,0
+Plumbing fixture,卫生设备,1
+Stop sign,停止标志,2
+Office supplies,办公用品,0
+Volleyball,排球,0
+Vase,花瓶,0
+Slow cooker,慢炖锅,0
+Wardrobe,衣柜,0
+Coffee,咖啡,0
+Whisk,搅拌器,0
+Paper towel,纸巾,0
+Personal care,个人护理,0
+Food,餐饮,0
+Sun hat,太阳帽,0
+Tree house,树屋,0
+Flying disc,飞盘,0
+Skirt,短裙,0
+Gas stove,煤气灶,0
+Salt and pepper shakers,盐和胡椒罐,0
+Mechanical fan,机械风扇,0
+Face powder,香粉,0
+Fax,传真,0
+Fruit,水果,0
+French fries,炸薯条,0
+Nightstand,床头柜,0
+Barrel,桶,0
+Kite,风筝,0
+Tart,甜果馅饼,0
+Treadmill,跑步机,0
+Fox,狐狸,0
+Flag,旗,0
+Horn,喇叭,0
+Window blind,窗帘,0
+Human foot,人脚,0
+Golf cart,高尔夫车,0
+Jacket,夹克,0
+Egg,蛋,0
+Street light,路灯,1
+Guitar,吉他,0
+Pillow,枕头,0
+Human leg,人腿,0
+Isopod,等足类,0
+Grape,葡萄,0
+Human ear,人耳,0
+Power plugs and sockets,电源插头和插座,0
+Panda,熊猫,0
+Giraffe,长颈鹿,0
+Woman,女人,1
+Door handle,门把手,0
+Rhinoceros,犀牛,0
+Bathtub,浴缸,0
+Goldfish,金鱼,0
+Houseplant,室内植物,0
+Goat,山羊,0
+Baseball bat,棒球棒,0
+Baseball glove,棒球手套,0
+Mixing bowl,搅拌碗,0
+Marine invertebrates,海洋无脊椎动物,0
+Kitchen utensil,厨房用具,0
+Light switch,电灯开关,0
+House,屋,1
+Horse,马,0
+Stationary bicycle,固定式自行车,1
+Hammer,锤子,0
+Ceiling fan,吊扇,0
+Sofa bed,沙发床,0
+Adhesive tape,胶带,0
+Harp,竖琴,0
+Sandal,凉鞋,0
+Bicycle helmet,自行车头盔,0
+Saucer,飞碟,0
+Harpsichord,大键琴,0
+Human hair,人的头发,0
+Heater,电暖器,0
+Harmonica,口琴,0
+Hamster,仓鼠,0
+Curtain,窗帘,0
+Bed,床,0
+Kettle,水壶,0
+Fireplace,壁炉,0
+Scale,规模,0
+Drinking straw,吸管,0
+Insect,昆虫,0
+Hair dryer,吹风机,0
+Kitchenware,厨具,0
+Indoor rower,室内划船器,0
+Invertebrate,无脊椎动物,0
+Food processor,食品加工机,0
+Bookcase,书柜,0
+Refrigerator,冰箱,0
+Wood-burning stove,燃木炉,0
+Punching bag,出气筒,0
+Common fig,普通无花果,0
+Cocktail shaker,鸡尾酒摇床,0
+Jaguar,美洲虎,0
+Golf ball,高尔夫球,0
+Fashion accessory,时尚配饰,0
+Alarm clock,闹钟,0
+Filing cabinet,文件柜,0
+Artichoke,洋蓟,0
+Table,桌子,0
+Tableware,餐具,0
+Kangaroo,袋鼠,0
+Koala,考拉,0
+Knife,刀,0
+Bottle,瓶子,0
+Bottle opener,开瓶器,0
+Lynx,山猫,0
+Lavender,薰衣草,0
+Lighthouse,灯塔,0
+Dumbbell,哑铃,0
+Human head,人头,0
+Bowl,碗,0
+Humidifier,加湿器,0
+Porch,门廊,0
+Lizard,蜥蜴,0
+Billiard table,台球桌,0
+Mammal,哺乳动物,0
+Mouse,鼠,0
+Motorcycle,摩托车,0
+Musical instrument,乐器,0
+Swim cap,泳帽,0
+Frying pan,平底锅,0
+Snowplow,雪犁,0
+Bathroom cabinet,浴室柜,0
+Missile,导弹,0
+Bust,胸围,0
+Man,男子,0
+Waffle iron,华夫铁,0
+Milk,牛奶,0
+Ring binder,活页夹,0
+Plate,盘子,0
+Mobile phone,移动电话,0
+Baked goods,焙烤食品,0
+Mushroom,蘑菇,0
+Crutch,拐杖,0
+Pitcher,投手,0
+Mirror,镜子,0
+Lifejacket,救生衣,0
+Table tennis racket,乒乓球拍,0
+Pencil case,铅笔盒,0
+Musical keyboard,音乐键盘,0
+Scoreboard,计分板,0
+Briefcase,公文包,0
+Kitchen knife,菜刀,0
+Nail,钉,0
+Tennis ball,网球,0
+Plastic bag,塑料袋,0
+Oboe,双簧管,0
+Chest of drawers,五斗柜,0
+Ostrich,鸵鸟,0
+Piano,钢琴,0
+Girl,女孩,1
+Plant,工厂,1
+Potato,土豆,0
+Hair spray,发胶,0
+Sports equipment,体育器材,0
+Pasta,意大利面,0
+Penguin,企鹅,0
+Pumpkin,南瓜,0
+Pear,梨,0
+Infant bed,婴儿床,0
+Polar bear,北极熊,0
+Mixer,混合器,0
+Cupboard,橱柜,0
+Jacuzzi,水力按摩池,0
+Pizza,比萨,0
+Digital clock,数码时钟,0
+Pig,猪,0
+Reptile,爬虫,0
+Rifle,步枪,0
+Lipstick,口红,0
+Skateboard,滑板,1
+Raven,掠夺,0
+High heels,高跟鞋,0
+Red panda,小熊猫,0
+Rose,玫瑰,0
+Rabbit,兔子,0
+Sculpture,雕塑,0
+Saxophone,萨克斯风,0
+Shotgun,弹枪,0
+Seafood,海鲜,0
+Submarine sandwich,潜艇三明治,0
+Snowboard,单板滑雪,0
+Sword,剑,0
+Picture frame,镜框,0
+Sushi,寿司,0
+Loveseat,双人沙发,0
+Ski,滑雪,0
+Squirrel,松鼠,0
+Tripod,鼎,0
+Stethoscope,听诊器,0
+Submarine,潜艇,0
+Scorpion,蝎,0
+Segway,电动代步车,1
+Training bench,训练台,0
+Snake,蛇,0
+Coffee table,咖啡桌,0
+Skyscraper,摩天大广告,1
+Sheep,羊,0
+Television,电视,0
+Trombone,长号,0
+Tea,茶,0
+Tank,罐,0
+Taco,墨西哥煎玉米粉卷,0
+Telephone,电话,1
+Torch,火炬,0
+Tiger,虎,0
+Strawberry,草莓,0
+Trumpet,喇叭,0
+Tree,树,1
+Tomato,番茄,0
+Train,培养,0
+Tool,工具,0
+Picnic basket,野餐篮子,0
+Cooking spray,烹饪喷雾,0
+Trousers,长裤,0
+Bowling equipment,保龄球装备,0
+Football helmet,足球头盔,0
+Truck,卡车,1
+Measuring cup,量杯,0
+Coffeemaker,咖啡机,0
+Violin,小提琴,0
+Vehicle,车辆,1
+Handbag,手提包,0
+Paper cutter,裁纸器,0
+Wine,葡萄酒,0
+Weapon,武器,0
+Wheel,轮,0
+Worm,虫,0
+Wok,炒锅,0
+Whale,鲸,0
+Zebra,斑马,0
+Auto part,汽车零件,0
+Jug,水罐,0
+Pizza cutter,披萨刀,0
+Cream,奶油,0
+Monkey,猴,0
+Lion,狮子,0
+Bread,面包,0
+Platter,拼盘,0
+Chicken,鸡,0
+Eagle,鹰,0
+Helicopter,直升机,0
+Owl,猫头鹰,0
+Duck,鸭,0
+Turtle,龟,0
+Hippopotamus,河马,0
+Crocodile,鳄鱼,0
+Toilet,厕所,1
+Toilet paper,卫生纸,0
+Squid,乌贼,0
+Clothing,服装,0
+Footwear,鞋类,0
+Lemon,柠檬,0
+Spider,蜘蛛,0
+Deer,鹿,0
+Frog,青蛙,0
+Banana,香蕉,0
+Rocket,火箭,0
+Wine glass,红酒杯,0
+Countertop,台面,0
+Tablet computer,平板电脑,0
+Waste container,垃圾箱,0
+Swimming pool,游泳池,0
+Dog,狗,1
+Book,书,0
+Elephant,象,0
+Shark,鲨鱼,0
+Candle,蜡烛,0
+Leopard,豹,0
+Axe,斧头,0
+Hand dryer,干手器,0
+Soap dispenser,皂液器,0
+Porcupine,豪猪,0
+Flower,花,1
+Canary,金丝雀,0
+Cheetah,猎豹,0
+Palm tree,棕榈树,0
+Hamburger,汉堡包,0
+Maple,枫,0
+Building,建造,0
+Fish,鱼,0
+Lobster,龙虾,0
+Asparagus,芦笋,0
+Furniture,家具类,0
+Hedgehog,刺猬,0
+Airplane,飞机,0
+Spoon,勺,0
+Otter,獭,0
+Bull,公牛,0
+Oyster,牡蛎,0
+Horizontal bar,单杠,0
+Convenience store,便利店,1
+Bomb,炸弹,0
+Bench,板凳,0
+Ice cream,冰淇淋,0
+Caterpillar,毛虫,0
+Butterfly,蝴蝶,0
+Parachute,降落伞,0
+Orange,橙子,0
+Antelope,羚羊,0
+Beaker,烧杯,0
+Moths and butterflies,飞蛾和蝴蝶,0
+Window,窗口,0
+Closet,壁橱,0
+Castle,城堡,0
+Jellyfish,海蜇,0
+Goose,鹅,0
+Mule,ule子,0
+Swan,天鹅,0
+Peach,桃子,0
+Coconut,椰子,0
+Seat belt,安全带,0
+Raccoon,浣熊,0
+Chisel,凿,0
+Fork,叉子,0
+Lamp,灯,0
+Camera,相机,0
+Squash,壁球,0
+Racket,球拍,0
+Human face,人脸,0
+Human arm,人手臂,0
+Vegetable,蔬菜,0
+Diaper,尿布,0
+Unicycle,单轮车,0
+Falcon,鹘,0
+Chime,钟声,0
+Snail,蜗牛,0
+Shellfish,贝类,0
+Cabbage,卷心菜,0
+Carrot,胡萝卜,0
+Mango,芒果,0
+Jeans,牛仔裤,0
+Flowerpot,花盆,0
+Pineapple,菠萝,0
+Drawer,抽屉,0
+Stool,粪便,0
+Envelope,信封,0
+Cake,蛋糕,0
+Dragonfly,蜻蜓,0
+Sunflower,向日葵,0
+Microwave oven,微波炉,0
+Honeycomb,蜂窝,0
+Marine mammal,海洋哺乳动物,0
+Sea lion,海狮,0
+Ladybug,瓢虫,0
+Shelf,架,0
+Watch,看,0
+Candy,糖果,0
+Salad,沙拉,0
+Parrot,鹦鹉,0
+Handgun,手枪,0
+Sparrow,麻雀,0
+Van,范,0
+Grinder,磨床,0
+Spice rack,调料架,0
+Light bulb,灯泡,0
+Corded phone,有线电话,0
+Sports uniform,运动服,0
+Tennis racket,网球拍,0
+Wall clock,挂钟,0
+Serving tray,托盘,0
+Kitchen & dining room table,厨房和餐桌,0
+Dog bed,狗床,0
+Cake stand,蛋糕架,0
+Cat furniture,猫家具,0
+Bathroom accessory,浴室配件,0
+Facial tissue holder,面巾纸架,0
+Pressure cooker,压力锅,0
+Kitchen appliance,厨房用具,0
+Tire,轮胎,0
+Ruler,统治者,0
+Luggage and bags,行李和箱包,0
+Microphone,麦克风,0
+Broccoli,西兰花,0
+Umbrella,雨伞,1
+Pastry,糕点,0
+Grapefruit,葡萄柚,0
+Band-aid,创可贴,0
+Animal,动物,0
+Bell pepper,灯笼椒,0
+Turkey,火鸡,0
+Lily,百合,0
+Pomegranate,石榴,0
+Doughnut,甜甜圈,0
+Glasses,眼镜,0
+Human nose,人的鼻子,0
+Pen,钢笔,0
+Ant,蚂蚁,0
+Car,汽车,1
+Aircraft,飞机,0
+Human hand,人的手,0
+Skunk,臭鼬,0
+Teddy bear,泰迪熊,0
+Watermelon,西瓜,0
+Cantaloupe,哈密瓜,0
+Dishwasher,洗碗机,0
+Flute,长笛,0
+Balance beam,平衡木,0
+Sandwich,三明治,0
+Shrimp,虾,0
+Sewing machine,缝纫机,0
+Binoculars,望远镜,0
+Rays and skates,射线和溜冰鞋,0
+Ipod,ipod,0
+Accordion,手风琴,0
+Willow,柳树,1
+Crab,螃蟹,0
+Crown,王冠,0
+Seahorse,海马,0
+Perfume,香水,0
+Alpaca,羊驼,0
+Taxi,出租车,1
+Canoe,独木舟,0
+Remote control,遥控,0
+Wheelchair,轮椅,1
+Rugby ball,橄榄球,0
+Armadillo,犰狳,0
+Maracas,马拉卡斯,0
+Helmet,头盔,0

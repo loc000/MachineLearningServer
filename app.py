@@ -1,3 +1,6 @@
+import csv
+filter_class_label_file = "filter_class.csv"
+save_debug_output = True
 port = 5000
 import os
 import socket
@@ -6,6 +9,7 @@ import cv2
 import flask
 import numpy as np
 import tensorflow.compat.v1 as tf
+
 tf.disable_v2_behavior()
 from PIL import Image
 from flask import jsonify
@@ -26,7 +30,10 @@ model_weight_file = 'frozen_inference_graph.pb'
 model_graph_file = 'graph.pbtxt'
 if not os.path.isfile(model_weight_file):
     import wget
-    wget.download("https://github.com/loc000/MachineLearningServer/releases/download/ssd_mobilenet_v2_oid_v4_2018_12_12/frozen_inference_graph.pb",out=model_weight_file)
+
+    wget.download(
+        "https://github.com/loc000/MachineLearningServer/releases/download/ssd_mobilenet_v2_oid_v4_2018_12_12/frozen_inference_graph.pb",
+        out=model_weight_file)
     # wget.download("https://github.com/loc000/MachineLearningServer/releases/download/ssd_mobilenet_v2_oid_v4_2018_12_12/graph.pbtxt",out=model_graph_file)
 cvNet = cv2.dnn.readNetFromTensorflow(model_weight_file, model_graph_file)
 # cvNet.setPreferableBackend(cv2.dnn.DNN_BACKEND_INFERENCE_ENGINE)
@@ -45,10 +52,8 @@ except:
     s.connect(("192.168.0.1", 80))
 my_ip = s.getsockname()[0]
 
-
-@app.route('/objectdetection', methods=['GET'])
-def fuck():
-    return "fuck"
+frame_no = 0
+filter_class = list(csv.reader(open(filter_class_label_file, encoding="utf-8"), delimiter=','))
 
 
 @app.route('/objectdetection', methods=['POST'])
@@ -65,19 +70,33 @@ def predict():
     label = 'Inference time: %.2f ms' % (t * 1000.0 / cv2.getTickFrequency())
     print(label)
     output_result_list = []
+    if save_debug_output:
+        display_img = img.copy()
     for detection in cvOut[0, 0, :, :]:
         score = float(detection[2])
         className = classList[int(detection[1]) - 1]
+        label_list = filter_class[int(detection[1])]
+        img_write = img.copy()
 
-        if score > 0.3:
+        if int(label_list[2]) > 0 and score > 0.2:
+            if len(label_list)>3 and score< label_list[3]:
+                break
             left = max(detection[3] * cols, 0)
             top = max(detection[4] * rows, 0)
             right = detection[5] * cols
             bottom = detection[6] * rows
-            # cv2.rectangle(img, (int(left), int(top)), (int(right), int(bottom)), (23, 230, 210), thickness=2)
-            # print(classList[int(detection[1]) - 1])
-            # cv2.putText(img, classList[int(detection[1]) - 1], (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
-            #             (0, 255, 255), 1, cv2.LINE_AA)
+
+            if save_debug_output:
+
+                cv2.rectangle(img_write, (int(left), int(top)), (int(right), int(bottom)), (23, 230, 210), thickness=2)
+                cv2.rectangle(display_img, (int(left), int(top)), (int(right), int(bottom)), (23, 230, 210), thickness=2)
+
+                # print(classList[int(detection[1]) - 1])
+
+                cv2.putText(img_write, label_list[0], (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                            (0, 255, 255), 1, cv2.LINE_AA)
+                cv2.putText(display_img, label_list[0], (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                            (0, 255, 255), 1, cv2.LINE_AA)
 
             mid_x, mid_y = left + (right - left) / 2, top + (bottom - top) / 2
             loc = ""
@@ -94,16 +113,22 @@ def predict():
             # cv2.putText(img, loc, (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
             #             (0, 255, 255), 1, cv2.LINE_AA)
 
-            output_result_list.append({"className":className ,
+            output_result_list.append({"className": className,
                                        "left": (int(left)),
                                        "top": (int(top)),
                                        "right": int(right),
                                        "bottom": int(bottom),
                                        "location_description": loc
                                        })
+            if save_debug_output:
+                output_folder = "output/" + className + label_list[1] + "/"
+                if not os.path.isdir(output_folder):
+                    os.makedirs(output_folder, exist_ok=True)
+                cv2.imwrite(output_folder + "frameNo_" + str(frame_no).zfill(6) + "score_" + str(score) + ".jpg", img_write)
     # data["result"] = output_result_list
-    # cv2.imshow("loc",img)
-    # cv2.waitKey(1)
+    if save_debug_output:
+        cv2.imshow("result", display_img)
+        cv2.waitKey(1)
     # print(output_result_list)
     return jsonify(output_result_list)
 
@@ -122,14 +147,14 @@ def imagecaption():
     if img_np.ndim == 2:
         img_np = np.stack((img_np,) * 3, axis=-1)
     alphas, betas, captions = cap_infer.inference_np(np.array([img_np]))
-    #output_result_list = []
+    # output_result_list = []
     out_caption = None
     for alpha, beta, caption in zip(alphas, betas, captions):
         out_caption = caption
         # out_file.write("{}\t{}\n".format(fname, caption))
         # if args.visualize:
         #     visualize(alpha, beta, caption, fname, args.use_inception)
-        #output_result_list.append({"caption": caption})
+        # output_result_list.append({"caption": caption})
     # data["result"] = output_result_list
     # print(output_result_list)
     return jsonify({"caption": out_caption})
@@ -155,4 +180,4 @@ if __name__ == "__main__":
     zeroconf.register_service(image_caption_info)
     # app.run(host='0.0.0.0')
     print("Broadcasting mdns on {}".format(my_ip))
-    serve(app, host='0.0.0.0',port=port)
+    serve(app, host='0.0.0.0', port=port)
