@@ -58,6 +58,8 @@ filter_class = list(csv.reader(open(filter_class_label_file, encoding="utf-8"), 
 
 @app.route('/objectdetection', methods=['POST'])
 def predict():
+    global frame_no
+    frame_no = frame_no + 1
     request_json = request.json
     img = cv2.imdecode(np.frombuffer(request.data, np.uint8), cv2.IMREAD_UNCHANGED)
     height, width, _ = img.shape
@@ -78,7 +80,7 @@ def predict():
         label_list = filter_class[int(detection[1])]
         img_write = img.copy()
 
-        if int(label_list[2]) > 0 and score > 0.2:
+        if int(label_list[2]) > 0 and score > 0.1:
             if len(label_list)>3 and score< label_list[3]:
                 break
             left = max(detection[3] * cols, 0)
@@ -121,10 +123,14 @@ def predict():
                                        "location_description": loc
                                        })
             if save_debug_output:
-                output_folder = "output/" + className + label_list[1] + "/"
-                if not os.path.isdir(output_folder):
-                    os.makedirs(output_folder, exist_ok=True)
-                cv2.imwrite(output_folder + "frameNo_" + str(frame_no).zfill(6) + "score_" + str(score) + ".jpg", img_write)
+                output_object_folder = "output/byObject/" + className + label_list[1] + "/"
+                if not os.path.isdir(output_object_folder):
+                    os.makedirs(output_object_folder, exist_ok=True)
+                output_frame_folder = "output/byFrame/"
+                if not os.path.isdir(output_frame_folder):
+                    os.makedirs(output_frame_folder, exist_ok=True)
+                cv2.imwrite(output_object_folder + "frameNo_" + str(frame_no).zfill(6) + "_score_" + str(score) + ".jpg", img_write)
+                cv2.imwrite(output_frame_folder + "frameNo_" + str(frame_no).zfill(6)+ ".jpg", display_img)
     # data["result"] = output_result_list
     if save_debug_output:
         cv2.imshow("result", display_img)
