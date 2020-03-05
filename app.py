@@ -1,6 +1,7 @@
 import csv
 filter_class_label_file = "filter_class.csv"
 save_debug_output = True
+enable_image_caption = False
 port = 5000
 import os
 import socket
@@ -8,9 +9,7 @@ import socket
 import cv2
 import flask
 import numpy as np
-import tensorflow.compat.v1 as tf
 
-tf.disable_v2_behavior()
 from PIL import Image
 from flask import jsonify
 from flask import request
@@ -19,11 +18,13 @@ from waitress import serve
 
 cwd = os.getcwd()
 
-os.chdir("./ShowAttendAndTellModel/")
-print(os.getcwd())
-from ShowAttendAndTellModel.run_inference import CaptionInference
-
-os.chdir(cwd)
+if enable_image_caption:
+    import tensorflow.compat.v1 as tf
+    tf.disable_v2_behavior()
+    os.chdir("./ShowAttendAndTellModel/")
+    print(os.getcwd())
+    from ShowAttendAndTellModel.run_inference import CaptionInference
+    os.chdir(cwd)
 
 os.chdir("./ssd_mobilenet_v2_oid_v4_2018_12_12/")
 model_weight_file = 'frozen_inference_graph.pb'
@@ -81,7 +82,7 @@ def predict():
         img_write = img.copy()
 
         if int(label_list[2]) > 0 and score > 0.1:
-            if len(label_list)>3 and score< label_list[3]:
+            if len(label_list)>3 and score< float(label_list[3]):
                 break
             left = max(detection[3] * cols, 0)
             top = max(detection[4] * rows, 0)
@@ -138,52 +139,56 @@ def predict():
     # print(output_result_list)
     return jsonify(output_result_list)
 
-
-@app.route('/imagecaption', methods=['POST'])
-def imagecaption():
-    request_json = request.json
-    img = cv2.imdecode(np.frombuffer(request.data, np.uint8), cv2.IMREAD_UNCHANGED)
-    height, width, _ = img.shape
-    img_np = np.array(cap_infer.resize_image(Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)),
-                                             cap_infer.model.cnn.image_size)).astype(np.float32)
-    if cap_infer.use_inception:
-        img_np /= 255.0
-        img_np -= 0.5
-        img_np *= 2.0
-    if img_np.ndim == 2:
-        img_np = np.stack((img_np,) * 3, axis=-1)
-    alphas, betas, captions = cap_infer.inference_np(np.array([img_np]))
-    # output_result_list = []
-    out_caption = None
-    for alpha, beta, caption in zip(alphas, betas, captions):
-        out_caption = caption
-        # out_file.write("{}\t{}\n".format(fname, caption))
-        # if args.visualize:
-        #     visualize(alpha, beta, caption, fname, args.use_inception)
-        # output_result_list.append({"caption": caption})
-    # data["result"] = output_result_list
-    # print(output_result_list)
-    return jsonify({"caption": out_caption})
+if enable_image_caption:
+    @app.route('/imagecaption', methods=['POST'])
+    def imagecaption():
+        request_json = request.json
+        img = cv2.imdecode(np.frombuffer(request.data, np.uint8), cv2.IMREAD_UNCHANGED)
+        height, width, _ = img.shape
+        img_np = np.array(cap_infer.resize_image(Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)),
+                                                 cap_infer.model.cnn.image_size)).astype(np.float32)
+        if cap_infer.use_inception:
+            img_np /= 255.0
+            img_np -= 0.5
+            img_np *= 2.0
+        if img_np.ndim == 2:
+            img_np = np.stack((img_np,) * 3, axis=-1)
+        alphas, betas, captions = cap_infer.inference_np(np.array([img_np]))
+        # output_result_list = []
+        out_caption = None
+        for alpha, beta, caption in zip(alphas, betas, captions):
+            out_caption = caption
+            # out_file.write("{}\t{}\n".format(fname, caption))
+            # if args.visualize:
+            #     visualize(alpha, beta, caption, fname, args.use_inception)
+            # output_result_list.append({"caption": caption})
+        # data["result"] = output_result_list
+        # print(output_result_list)
+        return jsonify({"caption": out_caption})
 
 
 if __name__ == "__main__":
-    sess = tf.Session()
-    cap_infer = CaptionInference(sess, "ShowAttendAndTellModel/model_best/model-best", use_inception=True)
-    object_detection_info = ServiceInfo("_oml._tcp.local.",
-                                        "_oml._tcp.local.",
-                                        socket.inet_aton(my_ip), port, 0, 0,
-                                        {'type': 'objectdetection'},
-                                        "object_detection_machine_learning_server.tcp.local.")
+    if enable_image_caption:
+        sess = tf.Session()
+        cap_infer = CaptionInference(sess, "ShowAttendAndTellModel/model_best/model-best", use_inception=True)
+        image_caption_info = ServiceInfo("_icml._tcp.local.",
+                                         "_icml._tcp.local.",
+                                         socket.inet_aton(my_ip), port, 0, 0,
+                                         {'type': 'imagecaption'},
+                                         "image_caption_machine_learning_server.tcp.local.")
 
-    image_caption_info = ServiceInfo("_icml._tcp.local.",
-                                     "_icml._tcp.local.",
-                                     socket.inet_aton(my_ip), port, 0, 0,
-                                     {'type': 'imagecaption'},
-                                     "image_caption_machine_learning_server.tcp.local.")
+    object_detection_info = ServiceInfo("_oml._tcp.local.",
+                                    "_oml._tcp.local.",
+                                    socket.inet_aton(my_ip), port, 0, 0,
+                                    {'type': 'objectdetection'},
+                                    "object_detection_machine_learning_server.tcp.local.")
 
     zeroconf = Zeroconf()
     zeroconf.register_service(object_detection_info)
-    zeroconf.register_service(image_caption_info)
+    if enable_image_caption:
+        zeroconf.register_service(image_caption_info)
+    else:
+        print("image caption is disabled.")
     # app.run(host='0.0.0.0')
     print("Broadcasting mdns on {}".format(my_ip))
     serve(app, host='0.0.0.0', port=port)
