@@ -166,7 +166,7 @@ if enable_image_caption:
         # print(output_result_list)
         return jsonify({"caption": out_caption})
 
-
+ 
 if __name__ == "__main__":
     if enable_image_caption:
         sess = tf.Session()
