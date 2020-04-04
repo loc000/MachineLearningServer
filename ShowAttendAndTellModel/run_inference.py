@@ -4,8 +4,11 @@ import os
 import sys
 import math
 import argparse
+import tarfile
+
 import skimage.transform
 import matplotlib.pyplot as plt
+import wget
 from six.moves import cPickle as pickle
 import numpy as np
 from scipy import ndimage
@@ -27,11 +30,22 @@ class CaptionInference(object):
             L = 64
             D = 2048
             cnn_model_path = os.path.join(path_prefix, 'data/inception_v3.ckpt')
+            if not os.path.isfile(cnn_model_path):
+                print("{} not found, downloading....".format(cnn_model_path))
+                cwd = os.getcwd()
+                os.chdir(os.path.dirname(os.path.abspath(__file__)))
+                wget.download("http://download.tensorflow.org/models/inception_v3_2016_08_28.tar.gz","inception_v3_2016_08_28.tar.gz")
+                tar = tarfile.open("inception_v3_2016_08_28.tar.gz", "r:gz")
+                tar.extractall()
+                tar.close()
+                os.remove("inception_v3_2016_08_28.tar.gz")
+                os.rename("inception_v3.ckpt","data/inception_v3.ckpt")
+                print(os.getcwd())
+                os.chdir(cwd)
         else:
             L = 196
             D = 512
             cnn_model_path = os.path.join(path_prefix, './data/imagenet-vgg-verydeep-19.mat')
-
         self.batch_size = 128
         self.sess = sess
         self.use_inception = use_inception
@@ -51,6 +65,18 @@ class CaptionInference(object):
         print("Loading LSTM weights...")
         # tf.global_variables_initializer().run()
         saver = tf.train.Saver(self.model.sampler_vars)
+        cwd = os.getcwd()
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
+        if not os.path.isfile(model_path+".data-00000-of-00001"):
+            print("{} not found, downloading....".format(model_path+".data-00000-of-00001"))
+            wget.download("http://jaina.cs.ucdavis.edu/datasets/adv/captioning/attention-model-best.tar.bz2","attention-model-best.tar.bz2")
+            tar = tarfile.open("attention-model-best.tar.bz2", "r:bz2")
+            tar.extractall()
+            tar.close()
+            os.remove("attention-model-best.tar.bz2")
+            # os.rename("model_best",os.path.dirname(os.path.dirname(model_path)))
+            print(os.getcwd())
+        os.chdir(cwd)
         saver.restore(sess, model_path)
 
     def inference_np(self, images):
