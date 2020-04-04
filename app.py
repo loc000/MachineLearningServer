@@ -9,12 +9,15 @@ import socket
 import cv2
 import flask
 import numpy as np
+import test2
 
 from PIL import Image
 from flask import jsonify
 from flask import request
 from zeroconf import ServiceInfo, Zeroconf
 from waitress import serve
+from keras.models import load_model
+from layers import BilinearUpSampling2D
 
 cwd = os.getcwd()
 
@@ -56,14 +59,16 @@ my_ip = s.getsockname()[0]
 frame_no = 0
 filter_class = list(csv.reader(open(filter_class_label_file, encoding="utf-8"), delimiter=','))
 
-
 @app.route('/objectdetection', methods=['POST'])
 def predict():
     global frame_no
     frame_no = frame_no + 1
     request_json = request.json
     img = cv2.imdecode(np.frombuffer(request.data, np.uint8), cv2.IMREAD_UNCHANGED)
+    cv2.imshow("img", img)
+    cv2.waitKey(0)
     height, width, _ = img.shape
+    depth=test2.predict(img)
     rows = img.shape[0]
     cols = img.shape[1]
     cvNet.setInput(cv2.dnn.blobFromImage(img, size=(300, 300), swapRB=True, crop=False))
@@ -80,8 +85,7 @@ def predict():
         className = classList[int(detection[1]) - 1]
         label_list = filter_class[int(detection[1])]
         img_write = img.copy()
-
-        if int(label_list[2]) > 0 and score > 0.1:
+        if int(label_list[2]) > 0 and score > 0.4:
             if len(label_list)>3 and score< float(label_list[3]):
                 break
             left = max(detection[3] * cols, 0)
@@ -102,6 +106,7 @@ def predict():
                             (0, 255, 255), 1, cv2.LINE_AA)
 
             mid_x, mid_y = left + (right - left) / 2, top + (bottom - top) / 2
+            depth2=depth[mid_y-1:mid_y,mid_x-1:mid_x]
             loc = ""
             if mid_y < height / 3:
                 loc += "Top "
@@ -121,7 +126,7 @@ def predict():
                                        "top": (int(top)),
                                        "right": int(right),
                                        "bottom": int(bottom),
-                                       "location_description": loc
+                                       "location_description": loc,
                                        })
             if save_debug_output:
                 output_object_folder = "output/byObject/" + className + label_list[1] + "/"
