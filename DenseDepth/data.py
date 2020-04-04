@@ -1,10 +1,10 @@
 import numpy as np
-from utils import DepthNorm
+from DenseDepth.utils import DepthNorm
 from io import BytesIO
 from PIL import Image
 from zipfile import ZipFile
 from keras.utils import Sequence
-from augment import BasicPolicy
+from DenseDepth.augment import BasicPolicy
 
 def extract_zip(input_zip):
     input_zip=ZipFile(input_zip)

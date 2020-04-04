@@ -81,7 +81,7 @@ def save_images(filename, outputs, inputs=None, gt=None, is_colormap=True, is_re
 def load_test_data(test_data_zip_file='nyu_test.zip'):
     print('Loading test data...', end='')
     import numpy as np
-    from data import extract_zip
+    from DenseDepth.data import extract_zip
     data = extract_zip(test_data_zip_file)
     from io import BytesIO
     rgb = np.load(BytesIO(data['eigen_test_rgb.npy']))

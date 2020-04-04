@@ -1,14 +1,13 @@
 import os
-import glob
 import argparse
-import matplotlib
 
 # Keras / TensorFlow
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '5'
 from keras.models import load_model
-from layers import BilinearUpSampling2D
-from utils import predict, load_images, display_images
-from matplotlib import pyplot as plt
+from DenseDepth.layers import BilinearUpSampling2D
+from DenseDepth.utils import predict, load_images
+
+
 def depth(img):
     # Argument Parser
     parser = argparse.ArgumentParser(description='High Quality Monocular Depth Estimation via Transfer Learning')

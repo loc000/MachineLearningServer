@@ -1,15 +1,13 @@
 import os
-import glob
 import time
 import argparse
 
 # Kerasa / TensorFlow
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '5'
 from keras.models import load_model
-from layers import BilinearUpSampling2D
-from loss import depth_loss_function
-from utils import predict, load_images, display_images, evaluate
-from matplotlib import pyplot as plt
+from DenseDepth.layers import BilinearUpSampling2D
+from DenseDepth.loss import depth_loss_function
+from DenseDepth.utils import evaluate
 
 # Argument Parser
 parser = argparse.ArgumentParser(description='High Quality Monocular Depth Estimation via Transfer Learning')
@@ -26,7 +24,7 @@ model = load_model(args.model, custom_objects=custom_objects, compile=False)
 # Load test data
 print('Loading test data...', end='')
 import numpy as np
-from data import extract_zip
+from DenseDepth.data import extract_zip
 data = extract_zip('nyu_test.zip')
 from io import BytesIO
 rgb = np.load(BytesIO(data['eigen_test_rgb.npy']))

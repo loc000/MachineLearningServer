@@ -1,4 +1,7 @@
 import csv
+
+import keras
+
 filter_class_label_file = "filter_class.csv"
 save_debug_output = True
 enable_image_caption = False
@@ -9,32 +12,31 @@ import socket
 import cv2
 import flask
 import numpy as np
-import test2
+from DenseDepth import test2
 
 from PIL import Image
 from flask import jsonify
 from flask import request
 from zeroconf import ServiceInfo, Zeroconf
 from waitress import serve
-from keras.models import load_model
-from layers import BilinearUpSampling2D
 
 cwd = os.getcwd()
-
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 if enable_image_caption:
-    import tensorflow.compat.v1 as tf
-    tf.disable_v2_behavior()
+    # import tensorflow.compat.v1 as tf
+    # tf.disable_v2_behavior()
     os.chdir("./ShowAttendAndTellModel/")
     print(os.getcwd())
     from ShowAttendAndTellModel.run_inference import CaptionInference
     os.chdir(cwd)
+
 
 os.chdir("./ssd_mobilenet_v2_oid_v4_2018_12_12/")
 model_weight_file = 'frozen_inference_graph.pb'
 model_graph_file = 'graph.pbtxt'
 if not os.path.isfile(model_weight_file):
     import wget
-
     wget.download(
         "https://github.com/loc000/MachineLearningServer/releases/download/ssd_mobilenet_v2_oid_v4_2018_12_12/frozen_inference_graph.pb",
         out=model_weight_file)
@@ -65,10 +67,9 @@ def predict():
     frame_no = frame_no + 1
     request_json = request.json
     img = cv2.imdecode(np.frombuffer(request.data, np.uint8), cv2.IMREAD_UNCHANGED)
-    cv2.imshow("img", img)
-    cv2.waitKey(0)
+    print(img.shape)
     height, width, _ = img.shape
-    depth=test2.predict(img)
+    depth= cv2.resize(test2.predict(img),(width,height))
     rows = img.shape[0]
     cols = img.shape[1]
     cvNet.setInput(cv2.dnn.blobFromImage(img, size=(300, 300), swapRB=True, crop=False))
@@ -173,8 +174,11 @@ if enable_image_caption:
 
  
 if __name__ == "__main__":
+    sess = tf.Session()
+    keras.backend.set_session(sess)
+    test2.set_session(sess)
     if enable_image_caption:
-        sess = tf.Session()
+        # sess = tf.Session()
         cap_infer = CaptionInference(sess, "ShowAttendAndTellModel/model_best/model-best", use_inception=True)
         image_caption_info = ServiceInfo("_icml._tcp.local.",
                                          "_icml._tcp.local.",

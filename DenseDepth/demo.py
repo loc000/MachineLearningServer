@@ -1,6 +1,5 @@
 import os
 import sys
-import glob
 import time
 import math
 import argparse
@@ -17,7 +16,7 @@ plasma = plt.get_cmap('plasma')
 
 # UI and OpenGL
 from PySide2 import QtCore, QtGui, QtWidgets, QtOpenGL
-from OpenGL import GL, GLU
+from OpenGL import GL
 from OpenGL.arrays import vbo
 from OpenGL.GL import shaders
 import glm
@@ -41,7 +40,7 @@ def load_model():
     # Kerasa / TensorFlow
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '5'
     from keras.models import load_model
-    from layers import BilinearUpSampling2D
+    from DenseDepth.layers import BilinearUpSampling2D
 
     # Custom object needed for inference and training
     custom_objects = {'BilinearUpSampling2D': BilinearUpSampling2D, 'depth_loss_function': None}
@@ -232,7 +231,7 @@ class GLWidget(QtOpenGL.QGLWidget):
 
         # Load test frame from disk
         self.rgb = np.load('demo_rgb.npy')
-        self.depth = resize(np.load('demo_depth.npy'), (240,320))
+        self.depth = resize(np.load('demo_depth.npy'), (240, 320))
         self.col_vbo = None
         self.pos_vbo = None
         self.updateRGBD()
