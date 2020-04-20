@@ -64,12 +64,14 @@ filter_class = list(csv.reader(open(filter_class_label_file, encoding="utf-8"), 
 @app.route('/objectdetection', methods=['POST'])
 def predict():
     global frame_no
+    global label_list
+    global depth2
     frame_no = frame_no + 1
     request_json = request.json
     img = cv2.imdecode(np.frombuffer(request.data, np.uint8), cv2.IMREAD_UNCHANGED)
     print(img.shape)
     height, width, _ = img.shape
-    depth= cv2.resize(test2.predict(img),(width,height))
+    depth= np.asarray(cv2.resize(test2.predict(img),(width,height)))
     rows = img.shape[0]
     cols = img.shape[1]
     cvNet.setInput(cv2.dnn.blobFromImage(img, size=(300, 300), swapRB=True, crop=False))
@@ -84,16 +86,17 @@ def predict():
     for detection in cvOut[0, 0, :, :]:
         score = float(detection[2])
         className = classList[int(detection[1]) - 1]
+        global label_list
         label_list = filter_class[int(detection[1])]
         img_write = img.copy()
-        if int(label_list[2]) > 0 and score > 0.4:
+        if int(label_list[2]) > 0 and score > 0.3:
             if len(label_list)>3 and score< float(label_list[3]):
                 break
             left = max(detection[3] * cols, 0)
             top = max(detection[4] * rows, 0)
             right = detection[5] * cols
             bottom = detection[6] * rows
-
+            
             if save_debug_output:
 
                 cv2.rectangle(img_write, (int(left), int(top)), (int(right), int(bottom)), (23, 230, 210), thickness=2)
@@ -107,8 +110,9 @@ def predict():
                             (0, 255, 255), 1, cv2.LINE_AA)
 
             mid_x, mid_y = left + (right - left) / 2, top + (bottom - top) / 2
-            depth2=depth[mid_y-1:mid_y,mid_x-1:mid_x]
             loc = ""
+            depth2=np.average(depth[int(top):int(bottom),int(left):int(right)])
+            priority=int(label_list[2])*int(depth2)
             if mid_y < height / 3:
                 loc += "Top "
             elif mid_y > height / 3 * 2:
@@ -128,6 +132,7 @@ def predict():
                                        "right": int(right),
                                        "bottom": int(bottom),
                                        "location_description": loc,
+                                       "depth": depth2
                                        })
             if save_debug_output:
                 output_object_folder = "output/byObject/" + className + label_list[1] + "/"
