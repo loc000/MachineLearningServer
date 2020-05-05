@@ -4,7 +4,7 @@ import keras
 
 filter_class_label_file = "filter_class.csv"
 save_debug_output = True
-enable_image_caption = False
+enable_image_caption = True
 port = 5000
 import os
 import socket
@@ -22,6 +22,18 @@ from waitress import serve
 
 cwd = os.getcwd()
 import tensorflow.compat.v1 as tf
+
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        # Currently, memory growth needs to be the same across GPUs
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+        print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+    except RuntimeError as e:
+        # Memory growth must be set before GPUs have been initialized
+        print(e)
 
 tf.disable_v2_behavior()
 if enable_image_caption:
@@ -193,7 +205,7 @@ if __name__ == "__main__":
     test2.set_session(sess)
     if enable_image_caption:
         # sess = tf.Session()
-        cap_infer = CaptionInference(sess, "ShowAttendAndTellModel/model_best/model-best", use_inception=True)
+        cap_infer = CaptionInference(sess, "./model_best/model-best", use_inception=True)
         image_caption_info = ServiceInfo("_icml._tcp.local.",
                                          "_icml._tcp.local.",
                                          socket.inet_aton(my_ip), port, 0, 0,
