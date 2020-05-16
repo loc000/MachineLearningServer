@@ -76,8 +76,8 @@ class CaptionInference(object):
             os.remove("attention-model-best.tar.bz2")
             # os.rename("model_best",os.path.dirname(os.path.dirname(model_path)))
             print(os.getcwd())
-        os.chdir(cwd)
         saver.restore(sess, model_path)
+        os.chdir(cwd)
 
     def inference_np(self, images):
         nimgs = images.shape[0]

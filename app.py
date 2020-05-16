@@ -1,4 +1,5 @@
 import csv
+import time
 
 import keras
 
@@ -79,48 +80,38 @@ filter_class = list(csv.reader(open(filter_class_label_file, encoding="utf-8"), 
 @app.route('/objectdetection', methods=['POST'])
 def predict():
     global frame_no
-    global label_list
     global depth2
     frame_no = frame_no + 1
     request_json = request.json
     img = cv2.imdecode(np.frombuffer(request.data, np.uint8), cv2.IMREAD_UNCHANGED)
     height, width, _ = img.shape
+    t1  =time.time()
     depth = np.asarray(cv2.resize(test2.predict(img), (width, height)))
+    print("depth estimation inference time: ",time.time()-t1)
     rows = img.shape[0]
     cols = img.shape[1]
     cvNet.setInput(cv2.dnn.blobFromImage(img, size=(300, 300), swapRB=True, crop=False))
     cvOut = cvNet.forward()
     # Put efficiency information.
     t, _ = cvNet.getPerfProfile()
-    print('Inference time: %.2f ms' % (t * 1000.0 / cv2.getTickFrequency()))
+    print('Object detection inference time: %.2f ms' % (t * 1000.0 / cv2.getTickFrequency()))
     output_result_list = []
     if save_debug_output:
         display_img = img.copy()
     for key,detection in enumerate(cvOut[0, 0, :, :]):
         score = float(detection[2])
         className = classList[int(detection[1]) - 1]
-        global label_list
         label_list = filter_class[int(detection[1])]
         img_write = img.copy()
         if int(label_list[2]) > 0 and score > 0.3:
-            if len(label_list) > 3 and score < float(label_list[3]):
+            if len(label_list) >= 4 and label_list[3] and score < float(label_list[3]):
+                print("skipped, {}, score={}".format(label_list[0],score))
                 continue
             left = max(detection[3] * cols, 0)
             top = max(detection[4] * rows, 0)
             right = detection[5] * cols
             bottom = detection[6] * rows
 
-            if save_debug_output:
-                cv2.rectangle(img_write, (int(left), int(top)), (int(right), int(bottom)), (23, 230, 210), thickness=2)
-                cv2.rectangle(display_img, (int(left), int(top)), (int(right), int(bottom)), (23, 230, 210),
-                              thickness=2)
-
-                # print(classList[int(detection[1]) - 1])
-
-                cv2.putText(img_write, label_list[0], (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
-                            (0, 255, 255), 1, cv2.LINE_AA)
-                cv2.putText(display_img, label_list[0], (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
-                            (0, 255, 255), 1, cv2.LINE_AA)
 
             mid_x, mid_y = left + (right - left) / 2, top + (bottom - top) / 2
             loc = ""
@@ -139,6 +130,17 @@ def predict():
             # cv2.putText(img, loc, (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
             #             (0, 255, 255), 1, cv2.LINE_AA)
 
+            if save_debug_output:
+                cv2.rectangle(img_write, (int(left), int(top)), (int(right), int(bottom)), (23, 230, 210), thickness=2)
+                cv2.rectangle(display_img, (int(left), int(top)), (int(right), int(bottom)), (23, 230, 210),
+                              thickness=2)
+
+                # print(classList[int(detection[1]) - 1])
+                img_display_text = label_list[0]+" d="+str(depth2)
+                cv2.putText(img_write, img_display_text, (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                            (0, 255, 255), 1, cv2.LINE_AA)
+                cv2.putText(display_img, img_display_text, (int(left), int(top)), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                            (0, 255, 255), 1, cv2.LINE_AA)
             output_result_list.append({"className": className,
                                        "left": (int(left)),
                                        "top": (int(top)),
@@ -165,6 +167,8 @@ def predict():
         if not os.path.isdir(output_frame_folder):
             os.makedirs(output_frame_folder, exist_ok=True)
         cv2.imwrite(output_frame_folder + "frameNo_" + str(frame_no).zfill(6) + ".jpg", display_img)
+
+        cv2.imshow("depth",depth)
         cv2.imshow("result", display_img)
         cv2.waitKey(1)
         pass
@@ -186,7 +190,9 @@ if enable_image_caption:
             img_np *= 2.0
         if img_np.ndim == 2:
             img_np = np.stack((img_np,) * 3, axis=-1)
+        t1 = time.time()
         alphas, betas, captions = cap_infer.inference_np(np.array([img_np]))
+        print("Image caption inference time:,",time.time()-t1)
         # output_result_list = []
         out_caption = None
         for alpha, beta, caption in zip(alphas, betas, captions):
@@ -224,6 +230,6 @@ if __name__ == "__main__":
         zeroconf.register_service(image_caption_info)
     else:
         print("image caption is disabled.")
-    # app.run(host='0.0.0.0')
     print("Broadcasting mdns on {}".format(my_ip))
+    # app.run(host='0.0.0.0',port=port)
     serve(app, host='0.0.0.0', port=port)
