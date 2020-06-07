@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ObjectDetectionServer.iml" filepath="$PROJECT_DIR$/.idea/ObjectDetectionServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/MachineLearningServer.iml" filepath="$PROJECT_DIR$/.idea/MachineLearningServer.iml" />
     </modules>
   </component>
 </project>

@@ -1,21 +1,23 @@
 from __future__ import division
 from __future__ import print_function
+
+import argparse
+import math
 import os
 import sys
-import math
-import argparse
 import tarfile
 
-import skimage.transform
 import matplotlib.pyplot as plt
-import wget
-from six.moves import cPickle as pickle
 import numpy as np
-from scipy import ndimage
-from PIL import Image
+import skimage.transform
 import tensorflow as tf
-from ShowAttendAndTellModel.core.utils import load_coco_data, decode_captions
+import wget
+from PIL import Image
+from six.moves import cPickle as pickle
+
 from ShowAttendAndTellModel.core.model import CaptionGenerator
+from ShowAttendAndTellModel.core.utils import decode_captions
+
 
 # inference on a batch of images
 class CaptionInference(object):

@@ -4,9 +4,9 @@ from core.utils import load_coco_data
 
 def main(use_inception):
     # load train dataset
-    print "Loading COCO training data..."
+    print("Loading COCO training data...")
     data = load_coco_data(data_path='./data', split='train')
-    print "Done!"
+    print("Done!")
     word_to_idx = data['word_to_idx']
     # load val dataset to print out bleu scores every epoch
     val_data = load_coco_data(data_path='./data', split='val')

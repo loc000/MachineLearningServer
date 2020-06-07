@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/image_caption" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/image_caption/src/research/big_transfer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/image_caption/src/research_combine_object_detection/big_transfer" vcs="Git" />
   </component>
 </project>

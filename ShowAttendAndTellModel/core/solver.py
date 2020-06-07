@@ -5,7 +5,7 @@ import numpy as np
 import time
 import sys
 import os
-import cPickle as pickle
+import pickle as pickle
 from scipy import ndimage
 from ShowAttendAndTellModel.core.utils import *
 from ShowAttendAndTellModel.core.bleu import evaluate
@@ -105,10 +105,10 @@ class CaptioningSolver(object):
         #summary_op = tf.merge_all_summaries()
         summary_op = tf.summary.merge_all()
 
-        print "The number of epoch: %d" %self.n_epochs
-        print "Data size: %d" %n_examples
-        print "Batch size: %d" %self.batch_size
-        print "Iterations per epoch: %d" %n_iters_per_epoch
+        print("The number of epoch: %d" %self.n_epochs)
+        print("Data size: %d" %n_examples)
+        print("Batch size: %d" %self.batch_size)
+        print("Iterations per epoch: %d" %n_iters_per_epoch)
 
         config = tf.ConfigProto(allow_soft_placement = True)
         #config.gpu_options.per_process_gpu_memory_fraction=0.9
@@ -120,7 +120,7 @@ class CaptioningSolver(object):
             saver = tf.train.Saver(max_to_keep=40)
 
             if self.pretrained_model is not None:
-                print "Start training with pretrained Model.."
+                print("Start training with pretrained Model..")
                 saver.restore(sess, self.pretrained_model)
 
             prev_loss = -1
@@ -146,18 +146,18 @@ class CaptioningSolver(object):
                         summary_writer.add_summary(summary, e*n_iters_per_epoch + i)
 
                     if (i+1) % self.print_every == 0:
-                        print "\nTrain loss at epoch %d & iteration %d (mini-batch): %.5f" %(e+1, i+1, l)
+                        print("\nTrain loss at epoch %d & iteration %d (mini-batch): %.5f" %(e+1, i+1, l))
                         ground_truths = captions[image_idxs == image_idxs_batch[0]]
                         decoded = decode_captions(ground_truths, self.model.idx_to_word)
                         for j, gt in enumerate(decoded):
-                            print "Ground truth %d: %s" %(j+1, gt)
+                            print("Ground truth %d: %s" %(j+1, gt))
                         gen_caps = sess.run(generated_captions, feed_dict)
                         decoded = decode_captions(gen_caps, self.model.idx_to_word)
-                        print "Generated caption: %s\n" %decoded[0]
+                        print("Generated caption: %s\n" %decoded[0])
 
-                print "Previous epoch loss: ", prev_loss
-                print "Current epoch loss: ", curr_loss
-                print "Elapsed time: ", time.time() - start_t
+                print("Previous epoch loss: ", prev_loss)
+                print("Current epoch loss: ", curr_loss)
+                print("Elapsed time: ", time.time() - start_t)
                 sys.stdout.flush()
                 prev_loss = curr_loss
                 curr_loss = 0
@@ -180,7 +180,7 @@ class CaptioningSolver(object):
                 # save model's parameters
                 if (e+1) % self.save_every == 0:
                     saver.save(sess, os.path.join(self.model_path, 'model'), global_step=e+1)
-                    print "model-%s saved." %(e+1)
+                    print("model-%s saved." %(e+1))
 
 
     def test(self, data, split='train', attention_visualization=True, save_sampled_captions=True):
@@ -214,7 +214,7 @@ class CaptioningSolver(object):
 
             if attention_visualization:
                 for n in range(10):
-                    print "Sampled Caption: %s" %decoded[n]
+                    print("Sampled Caption: %s" %decoded[n])
 
                     # Plot original image
                     img = ndimage.imread(image_files[n])

@@ -2,6 +2,7 @@ import csv
 import time
 
 import keras
+from PIL import Image
 
 filter_class_label_file = "filter_class.csv"
 save_debug_output = True
@@ -15,10 +16,9 @@ import flask
 import numpy as np
 from DenseDepth import test2
 
-from PIL import Image
 from flask import jsonify
 from flask import request
-from zeroconf import ServiceInfo, Zeroconf
+from zeroconf import ServiceInfo, Zeroconf, get_all_addresses
 from waitress import serve
 
 cwd = os.getcwd()
@@ -69,7 +69,6 @@ s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 try:
     s.connect(("192.168.43.1", 80))
 except:
-    print("Fuck")
     s.connect(("192.168.0.1", 80))
 my_ip = s.getsockname()[0]
 
@@ -85,7 +84,7 @@ def predict():
     request_json = request.json
     img = cv2.imdecode(np.frombuffer(request.data, np.uint8), cv2.IMREAD_UNCHANGED)
     height, width, _ = img.shape
-    t1  =time.time()
+    t1 = time.time()
     depth = np.asarray(cv2.resize(test2.predict(img), (width, height)))
     print("depth estimation inference time: ",time.time()-t1)
     rows = img.shape[0]
@@ -168,7 +167,7 @@ def predict():
             os.makedirs(output_frame_folder, exist_ok=True)
         cv2.imwrite(output_frame_folder + "frameNo_" + str(frame_no).zfill(6) + ".jpg", display_img)
 
-        cv2.imshow("depth",depth)
+        # cv2.imshow("depth",depth)
         cv2.imshow("result", display_img)
         cv2.waitKey(1)
         pass
@@ -205,24 +204,35 @@ if enable_image_caption:
         # print(output_result_list)
         return jsonify({"caption": out_caption})
 
+
 if __name__ == "__main__":
     sess = tf.Session()
     keras.backend.set_session(sess)
-    test2.set_session(sess)
+    # test2.set_session(sess)
     if enable_image_caption:
         # sess = tf.Session()
         cap_infer = CaptionInference(sess, "./model_best/model-best", use_inception=True)
+        # image_caption_info = ServiceInfo("_icml._tcp.local.",
+        #                                  "_icml._tcp.local.",
+        #                                  socket.inet_aton(my_ip), port, 0, 0,
+        #                                  {'type': 'imagecaption'},
+        #                                  "image_caption_machine_learning_server.tcp.local.")
         image_caption_info = ServiceInfo("_icml._tcp.local.",
-                                         "_icml._tcp.local.",
-                                         socket.inet_aton(my_ip), port, 0, 0,
-                                         {'type': 'imagecaption'},
-                                         "image_caption_machine_learning_server.tcp.local.")
+                                         "_icml._tcp.local.", addresses=[socket.inet_aton(my_ip)],
+                                         port=port,
+                                         properties={'type': 'imagecaption'},
+                                         server="image_caption_machine_learning_server.tcp.local.")
 
+    # object_detection_info = ServiceInfo("_oml._tcp.local.",
+    #                                     "_oml._tcp.local.",
+    #                                     socket.inet_aton(my_ip), port, 0, 0,
+    #                                     {'type': 'objectdetection'},
+    #                                     "object_detection_machine_learning_server.tcp.local.")
     object_detection_info = ServiceInfo("_oml._tcp.local.",
-                                        "_oml._tcp.local.",
-                                        socket.inet_aton(my_ip), port, 0, 0,
-                                        {'type': 'objectdetection'},
-                                        "object_detection_machine_learning_server.tcp.local.")
+                                        "_oml._tcp.local.", addresses=[socket.inet_aton(my_ip)],
+                                        port=port,
+                                        properties={'type': 'objectdetection'},
+                                        server="object_detection_machine_learning_server.tcp.local.")
 
     zeroconf = Zeroconf()
     zeroconf.register_service(object_detection_info)
@@ -231,5 +241,5 @@ if __name__ == "__main__":
     else:
         print("image caption is disabled.")
     print("Broadcasting mdns on {}".format(my_ip))
-    # app.run(host='0.0.0.0',port=port)
+    # app.run(host='0.0.0.0', port=port)
     serve(app, host='0.0.0.0', port=port)
