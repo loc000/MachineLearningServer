@@ -171,7 +171,9 @@ def predict():
         cv2.imshow("result", display_img)
         cv2.waitKey(1)
         pass
+    output_result_list = sorted(output_result_list, key = lambda i: i['priority'], reverse=True)
     print(output_result_list)
+
     return jsonify(output_result_list)
 
 
@@ -208,9 +210,9 @@ if enable_image_caption:
 if __name__ == "__main__":
     sess = tf.Session()
     keras.backend.set_session(sess)
-    # test2.set_session(sess)
+    test2.set_session(sess)
     if enable_image_caption:
-        # sess = tf.Session()
+        sess = tf.Session()
         cap_infer = CaptionInference(sess, "./model_best/model-best", use_inception=True)
         # image_caption_info = ServiceInfo("_icml._tcp.local.",
         #                                  "_icml._tcp.local.",

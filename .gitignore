@@ -557,9 +557,7 @@ dmypy.json
 .pyre/
 
 output
-!/ShowAttendAndTellModel/data/inception_v3.ckpt
 /ShowAttendAndTellModel/model_best/
 /ShowAttendAndTellModel/data/inception_v3.ckpt
 
 *.ckpt
-**/*.ckpt
