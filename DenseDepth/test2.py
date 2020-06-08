@@ -44,17 +44,7 @@ def predict(cv2_image):
             outputs = depth_estimation(model, inputs)
     outputs = (np.squeeze(outputs) * 255).astype(np.uint8)
     return outputs
-    # exit()
-    #
-    # # matplotlib problem on ubuntu terminal fix
-    # # matplotlib.use('TkAgg')
-    #
-    # # Display results
-    # viz = display_images(outputs.copy(), inputs.copy())
-    # plt.figure(figsize=(10, 5))
-    # plt.imshow(viz)
-    # plt.savefig('test.png')
-    # plt.show()
+
 if __name__ == '__main__':
     inputs = cv2.imread("examples/470_image.png")
     print(predict(inputs))
