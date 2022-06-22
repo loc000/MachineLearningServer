@@ -1,7 +1,7 @@
 imutils==0.5.3
 mss==5.0.0
 flask_opencv_streamer==1.4
-numpy==1.18.1
+numpy==1.22.0
 opencv_contrib_python==4.2.0.32
 zeroconf==0.27.1
 ifaddr==0.1.6
